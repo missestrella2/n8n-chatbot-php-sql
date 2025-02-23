@@ -1,0 +1,350 @@
+{
+  "name": "PRUEBAS PHP SQL",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "id": "c6358a40-c0b9-48d4-b793-d68b1c65cf5b",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -360,
+        -380
+      ],
+      "webhookId": "4dab6d41-f258-45cf-bf8a-a9421abcea79"
+    },
+    {
+      "parameters": {
+        "content": "### Want to learn more?\nWant to learn more about AI and how to apply it best in n8n? Have a look at our [new tutorial series on YouTube](https://www.youtube.com/watch?v=yzvLfHb0nqE&lc).",
+        "height": 100,
+        "width": 317,
+        "color": 6
+      },
+      "id": "74a4a29d-aee6-4fd2-8af0-272d25d3a62e",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Validaciones y Reglas Importantes\n1. Verificación de datos\nAsegúrate de que los datos ingresados para cada usuario contengan:\nNombre completo (nombre y apellido).\nCorreo electrónico (mail).\nSi falta algún dato o está mal escrito (errores ortográficos, formato de correo no válido, etc.), solicita al usuario que lo corrija.\n2. Detección de datos duplicados o similares\nAl crear o actualizar un usuario:\n\nConsulta la base de datos para verificar si el nombre o el correo coinciden exacta o parcialmente con un usuario ya existente.\nSi detectas uno o más registros con nombre o correo muy parecido/similar (posibles duplicados), notifica al usuario y pregunta si desea:\nReemplazar/actualizar el usuario existente.\nCrear el nuevo usuario de todas formas (aun existiendo coincidencia).\nCancelar la operación.\nSolicita confirmación antes de proceder en caso de detectar coincidencias.\n3. Confirmación de acciones críticas\nAl crear un nuevo usuario, confirma siempre que la información sea correcta antes de la inserción.\nAl eliminar un usuario, solicita confirmación final antes de proceder con el borrado definitivo.\nAntes de ejecutar cualquier acción (crear, actualizar, eliminar), pide confirmación al usuario con un estilo como:\n“¿Confirma el borrado del ID 45, nombre Juan Pablo, mail f@t.com?”\n4. Manejo de errores\nSi algún campo está vacío, contiene errores o formato incorrecto, solicita los datos correctos antes de continuar.\nEn caso de que el usuario necesite ayuda adicional o haya confusión con las instrucciones, ofrécele orientación.\n5. Respuestas y retroalimentación\nAl finalizar una acción (crear, actualizar o eliminar), confirma el resultado y muestra al usuario la información del registro afectado.\nEjemplo:\n“El usuario Juan Pérez con correo juan@example.com ha sido creado/actualizado/eliminado correctamente con el ID #XX”.\n6. Actualizar usuarios existentes\nSi el usuario quiere actualizar un usuario existente, pídele siempre el ID.\nSi el usuario proporciona solo un dato como el nombre o el mail, muéstrale los usuarios coincidentes para que elija cuál desea modificar exactamente.\nEstructura de la tabla de usuarios\nid (entero, único, autoincremental)\nnombre (cadena: nombre y apellido)\nmail (cadena: correo electrónico)\nInstrucción clave para la inserción en SQL\nCuando el usuario confirme que quiere crear un nuevo usuario y ya tengas su nombre completo y correo electrónico validados, devuelve siempre un JSON sin texto adicional, usando comillas dobles, con esta estructura:\njson\nCopiar\nEditar\n{\n  \"id\": 5,\n  \"nombre\": \"Ejemplo Nombre\",\n  \"mail\": \"ejemplo@correo.com\"\n}\nPara actualizar o cambiar datos de usuarios existentes, usa siempre UPDATE.\nPara crear usuarios nuevos, usa siempre INSERT.\nPara borrar un usuario existente, usa siempre DELETE.\n¿En qué puedo ayudarte hoy con la gestión de usuarios?"
+        }
+      },
+      "id": "d5ccce3a-ff37-49b0-98bf-9c23131a40cd",
+      "name": "AI Agent1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -160,
+        -380
+      ],
+      "alwaysOutputData": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": "gpt-3.5-turbo",
+        "options": {}
+      },
+      "id": "264c0e48-72db-461e-816f-81bcf1182d53",
+      "name": "OpenAI Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        -200
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "N8GjixQvFJ73GySx",
+          "name": "OpenAi pruebas php"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## IMPORTANTE\n\n- Ir a Admin Panel, ruedita de Ajustes y configurar **Time Zone**\n\n- Ir al menú de tres puntitos del workflow, Settings y configurar **TimeZone**\n\n- Verificar que las citas se agenden en la fecha y hora correctas",
+        "height": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -380
+      ],
+      "id": "19c860d7-ed73-4248-a3f9-557819d03b59",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "usuarios",
+          "mode": "list",
+          "cachedResultName": "usuarios"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.4,
+      "position": [
+        20,
+        -120
+      ],
+      "id": "e2f320dc-f31f-4f8f-8f35-18f6d03a49e4",
+      "name": "MySQL1",
+      "credentials": {
+        "mySql": {
+          "id": "ep2b8E6RdejvlWCC",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -100,
+        -140
+      ],
+      "id": "36e16ea9-e218-4050-b042-d622c6fac157",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "borra o elimina usuarios. debes evitar usar esta herramienta si la intencion es actualizar.",
+        "operation": "deleteTable",
+        "table": {
+          "__rl": true,
+          "value": "=usuarios",
+          "mode": "name"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "nombre",
+              "value": "={{ $fromAI('nombre') }}"
+            },
+            {
+              "column": "email",
+              "value": "={{ $fromAI('mail') }}"
+            },
+            {
+              "column": "id",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Value', `detecta el id`, 'string') }}"
+            }
+          ]
+        },
+        "combineConditions": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.4,
+      "position": [
+        400,
+        -160
+      ],
+      "id": "302189ec-59ee-4dc4-82d6-7b1666bae9b5",
+      "name": "MySQL",
+      "credentials": {
+        "mySql": {
+          "id": "ep2b8E6RdejvlWCC",
+          "name": "MySQL account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "=usuarios",
+          "mode": "name"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "nombre",
+              "value": "={{ $fromAI('name') }}"
+            },
+            {
+              "column": "email",
+              "value": "={{ $fromAI('mail') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.4,
+      "position": [
+        160,
+        -140
+      ],
+      "id": "a06f24fa-7984-4fc3-bec5-c432d8d4f932",
+      "name": "MySQL2",
+      "credentials": {
+        "mySql": {
+          "id": "ep2b8E6RdejvlWCC",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "operation": "update",
+        "table": {
+          "__rl": true,
+          "value": "=usuarios",
+          "mode": "name"
+        },
+        "dataMode": "defineBelow",
+        "columnToMatchOn": "id",
+        "valueToMatchOn": "={{ $fromAI('id') }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "nombre",
+              "value": "={{ $fromAI('nombre') }}"
+            },
+            {
+              "column": "email",
+              "value": "={{ $fromAI('mail') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.4,
+      "position": [
+        280,
+        -140
+      ],
+      "id": "079ee94c-a7df-404c-aded-6870eb117b74",
+      "name": "MySQL3",
+      "credentials": {
+        "mySql": {
+          "id": "ep2b8E6RdejvlWCC",
+          "name": "MySQL account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        []
+      ]
+    },
+    "MySQL1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "ab5c50a1-b5ff-40c5-9a1c-949d8b029ed4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e7e4476213406354ccab0703232a3b4aba39721ef1546b5a663ee78343fd3fe9"
+  },
+  "id": "FLxLPKkRX3TInwbD",
+  "tags": []
+}
