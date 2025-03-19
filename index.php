@@ -96,7 +96,7 @@ function filterTable() {
 	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
 	createChat({
-		webhookUrl: 'https://cynthiavillagra.app.n8n.cloud/webhook/4dab6d41-f258-45cf-bf8a-a9421abcea79/chat'
+		webhookUrl: 'https://miss9191.app.n8n.cloud/webhook/4dab6d41-f258-45cf-bf8a-a9421abcea79/chat'
 	});
 </script>
 
